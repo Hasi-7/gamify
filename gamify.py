@@ -145,7 +145,7 @@ def carrying_textbooks_hedons(duration):
 	elif (is_tired()):
 		cur_hedons += (-2)*duration
 	else:
-		if duration < 20:
+		if duration <= 20:
 			cur_hedons += 20*1 + (-1)*(	20 - duration)
 		else:
 			cur_hedons += 20*1 + (-1)*(duration - 20)
@@ -161,7 +161,7 @@ def carrying_textbooks_hedons(duration):
 # None
 
 def perform_activity(activity, duration):
-	# global cur_star, last_star_time
+	global cur_star_activity
 	# if ((cur_star == 1 and last_star_time > 0) or (cur_star == 2 and last_star_2_time > 0)) and cur_star != 3:
 	# 	cur_star = 0
 	if activity == "running":
@@ -174,6 +174,8 @@ def perform_activity(activity, duration):
 		variables_update(duration, "textbooks")
 	elif activity == "resting":
 		variables_update(duration, "resting")
+		if star_can_be_taken("running") or star_can_be_taken("textbooks"):
+			cur_star_activity = None
 
 # star_can_be_taken():
 # Check if the activity is the same as the cur_star_activity
