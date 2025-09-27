@@ -253,5 +253,3 @@ if __name__ == '__main__':
 	perform_activity("running", 170)
 	print(get_cur_health())            # 700 = 210 + 160 * 3 + 10 * 1         # Test 9
 	print(get_cur_hedons())            # -430 = -90 + 170 * (-2)              # Test 10
-	
-	
