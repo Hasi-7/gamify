@@ -34,7 +34,7 @@ def initialize():
 	
 	cur_time = 0
 	
-	last_finished = -1000
+	last_finished = 0
 
 # variables_update():
 # Update all general varaibles according to the duration and activity
@@ -46,20 +46,21 @@ def initialize():
 
 def variables_update(duration, activity):
 	global cur_time, last_finished, last_activity, last_activity_duration, cur_star, last_star_time, last_star_2_time
-	if activity == "resting" and duration != 120:
+	if activity == "resting" and duration == 120:
+		last_activity = activity
 		cur_time += duration
-		last_finished = duration
+		last_finished = 120
 	else:	
 		cur_time += duration
-		last_finished = duration
-		last_activity = activity
-		last_activity_duration = duration
+		last_finished = last_activity_duration
+		if activity != "resting":
+			last_activity = activity
+			last_activity_duration = duration
 	if cur_star == 1:
 		last_star_time += duration
 	elif cur_star == 2:
 		last_star_time += duration
 		last_star_2_time += duration
-
 
 # running_health(): 
 # Check all the cases of when the user runs
@@ -91,20 +92,24 @@ def running_health(duration):
 # None
 
 def running_hedons(duration):
-	global bored_with_stars, cur_star_activity, cur_hedons, cur_star_activity
+	global bored_with_stars, cur_star_activity, cur_hedons, cur_star_activity, cur_star, last_star_time
 	if bored_with_stars:
 		pass
-	elif not bored_with_stars and cur_star_activity == "running":
+	x=2
+	if (is_tired()):
+		x = -2
+	if not bored_with_stars and cur_star_activity == "running":
 		if duration < 10:
-			cur_hedons += (3+2)*duration
+			cur_hedons += (3+x)*duration
 		else:
-			cur_hedons += (3)*10 + (-2)*(duration) 
+			cur_hedons += (3+x)*10 + (-2)*(duration-10) 
 		cur_star_activity = None
 	elif (is_tired()):
 		cur_hedons += (-2)*duration
 	else:
 		cur_hedons += 10*2 + (-2)*(duration-10)
-
+	if star_can_be_taken("textbooks"):
+		cur_star_activity = None
 # carrying_textbooks_health(): 
 # Update cur_health based on duration
 # Parameters: 
@@ -125,20 +130,27 @@ def carrying_textbooks_health(duration):
 # None
 
 def carrying_textbooks_hedons(duration):
-	global bored_with_stars, cur_star_activity, cur_hedons, cur_star_activity
+	global bored_with_stars, cur_star_activity, cur_hedons, cur_star_activity, cur_star, last_star_time
+	x=1
+	if (is_tired()):
+		x = -1
 	if bored_with_stars:
 		pass
-	elif not bored_with_stars and cur_star_activity == "textbooks":
+	if not bored_with_stars and cur_star_activity == "textbooks":
 		if duration < 10:
-			cur_hedons += (3+2)*duration
+			cur_hedons += (3+x)*duration
 		else:
-			cur_hedons += 3*10 + (-2)*(duration)
+			cur_hedons += (3+x)*10 + (-2)*(duration-10)
 		cur_star_activity = None
 	elif (is_tired()):
 		cur_hedons += (-2)*duration
 	else:
-		cur_hedons += 20*1 + (-1)*(duration-20)
-
+		if duration < 20:
+			cur_hedons += 20*1 + (-1)*(	20 - duration)
+		else:
+			cur_hedons += 20*1 + (-1)*(duration - 20)
+	if star_can_be_taken("running"):
+		cur_star_activity = None
 # perform_activity():
 # Check which activity the user is performing
 # Call functions accordingly which are associated with that activity
@@ -149,6 +161,9 @@ def carrying_textbooks_hedons(duration):
 # None
 
 def perform_activity(activity, duration):
+	# global cur_star, last_star_time
+	# if ((cur_star == 1 and last_star_time > 0) or (cur_star == 2 and last_star_2_time > 0)) and cur_star != 3:
+	# 	cur_star = 0
 	if activity == "running":
 		running_health(duration)
 		running_hedons(duration)
@@ -202,10 +217,11 @@ def get_cur_health():
 def offer_star(activity):
 	global cur_star, cur_star_activity, bored_with_stars, last_star_time, last_star_2_time
 	if last_star_time >= 120:
-		cur_star = 0
+		cur_star = 1
 		last_star_time = 0
 		last_star_2_time = 0
-	cur_star += 1
+	else:
+		cur_star += 1
 	cur_star_activity = activity
 	if cur_star > 2 and last_star_time < 120:
 		bored_with_stars = True
@@ -228,8 +244,8 @@ def most_fun_activity_minute():
 
 
 def is_tired():
-	global last_activity, last_finished
-	if (last_activity == "running" or last_activity == "textbooks") and (last_finished < 120):
+	global last_activity, last_finished, last_activity_duration
+	if ((last_activity == "running" or last_activity == "textbooks") and (last_finished < 120)) or (last_activity_duration < 120 and (last_activity == "running" or last_activity == "textbooks")):
 		return True
 	else:
 		return False
