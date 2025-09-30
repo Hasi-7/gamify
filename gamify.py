@@ -12,11 +12,13 @@ def initialize():
 	global cur_time
 	global last_activity, last_activity_duration
 	
-	global last_finished
+	global last_exercise_finished
 	global bored_with_stars
 
 	global cur_star, cur_star_activity
 	global last_star_time, last_star_2_time
+
+	global rested_2_hours
 
 	cur_hedons = 0
 	cur_health = 0
@@ -34,7 +36,9 @@ def initialize():
 	
 	cur_time = 0
 	
-	last_finished = 0
+	last_exercise_finished = 0
+
+	rested_2_hours = False
 
 # variables_update():
 # Update all general varaibles according to the duration and activity
@@ -45,17 +49,14 @@ def initialize():
 # None
 
 def variables_update(duration, activity):
-	global cur_time, last_finished, last_activity, last_activity_duration, cur_star, last_star_time, last_star_2_time
-	if activity == "resting" and duration == 120:
-		last_activity = activity
-		cur_time += duration
-		last_finished = 120
-	else:	
-		cur_time += duration
-		last_finished = last_activity_duration
-		if activity != "resting":
-			last_activity = activity
-			last_activity_duration = duration
+	global cur_time, last_exercise_finished, last_activity, last_activity_duration, cur_star, last_star_time, last_star_2_time
+	last_activity = activity
+	last_activity_duration = duration
+	cur_time += duration
+	if activity == "running" or activity == "textbooks":
+		last_exercise_finished = 0
+	else:
+		last_exercise_finished = duration	
 	if cur_star == 1:
 		last_star_time += duration
 	elif cur_star == 2:
@@ -95,7 +96,8 @@ def running_hedons(duration):
 	global bored_with_stars, cur_star_activity, cur_hedons, cur_star_activity, cur_star, last_star_time
 	if bored_with_stars:
 		pass
-	x=2
+	
+	x = 2
 	if (is_tired()):
 		x = -2
 	if not bored_with_stars and cur_star_activity == "running":
