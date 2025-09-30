@@ -134,7 +134,7 @@ def running_hedons(acitvity, duration):
 
 def star_bonus_running(duration, x):
 	global cur_hedons, cur_star_activity, cur_star
-	if duration < 10:
+	if duration <= 10:
 		cur_hedons += (3+x)*duration
 	else:
 		cur_hedons += (3+x)*10 + (-2)*(duration-10) 
@@ -191,7 +191,7 @@ def carrying_textbooks_hedons(acitvity, duration):
 
 def star_bonus_textbooks(duration, x):
 	global cur_hedons, cur_star_activity, cur_star
-	if duration < 10:
+	if duration <= 10:
 		cur_hedons += (3+x) * duration
 	else:
 		if x == -2:
