@@ -53,12 +53,15 @@ def initialize():
 # None
 
 def variables_update(duration, activity):
-	global cur_time, last_exercise_finished, last_activity, last_activity_duration, cur_star, last_star_time, last_star_2_time, cur_star_activity
+	global cur_time, last_exercise_finished, last_activity, last_activity_duration, cur_star, last_star_time, last_star_2_time, cur_star_activity, rested_2_hours
 	last_activity = activity
 	last_activity_duration = duration
 	cur_time += duration
 	if activity == "running" or activity == "textbooks":
 		last_exercise_finished = 0
+	elif duration >= 120:
+		rested_2_hours = True
+		last_exercise_finished = duration
 	else:
 		last_exercise_finished = duration	
 	if  cur_star and star_count == 1:
@@ -208,7 +211,7 @@ def star_bonus_textbooks(duration, x):
 # None
 
 def perform_activity(activity, duration):
-	global cur_star_activity
+	global cur_star_activity, rested_2_hours
 	update_running_minutes(activity)
 	if activity == "running":
 		running_health(duration)
@@ -220,8 +223,6 @@ def perform_activity(activity, duration):
 		variables_update(duration, activity)
 	elif activity == "resting":
 		variables_update(duration, activity)
-		if star_can_be_taken("running") or star_can_be_taken("textbooks"):
-			cur_star_activity = None
 	wasted_star(activity)
 
 # wasted_star():
