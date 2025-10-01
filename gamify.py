@@ -67,6 +67,7 @@ def variables_update(duration, activity):
 	if  cur_star and star_count == 1:
 		last_star_time += duration
 		cur_star_activity = None
+		cur_star = None
 	elif cur_star and star_count == 2:
 		last_star_time += duration
 		last_star_2_time += duration
@@ -83,10 +84,10 @@ def variables_update(duration, activity):
 def running_health(duration):
 	global cur_health, running_minutes
 	# First four if/elif statements check for all cases relevant to total consecutive running minutes being greater than 180
-	if duration > 180:
-		cur_health += (duration - 180) * 1 + 180 * 3
-	elif running_minutes > 180:
+	if running_minutes > 180:
 		cur_health += duration * 1
+	elif duration > 180:
+		cur_health += (duration - 180) * 1 + 180 * 3
 	elif duration > 180:
 		cur_health += 180 * 3 + (duration - 180) * 1
 	elif duration + running_minutes > 180:
@@ -343,33 +344,14 @@ def is_tired():
 				
 if __name__ == '__main__':
 	initialize()
-	# perform_activity("textbooks", 30)
-	# print(get_cur_hedons())
-	# print(get_cur_health())
-	# offer_star("textbooks")
-	# perform_activity("textbooks", 70)
-	# print(get_cur_hedons())
-	# print(get_cur_health())  
-	# perform_activity("textbooks", 4)
-	# print(get_cur_hedons())
-	# print(get_cur_health())
-	# perform_activity("textbooks", 20)
-	# print(get_cur_hedons())
-	# print(get_cur_health())
-	perform_activity("running", 30)    
-	print(get_cur_hedons())            # -20 = 10 * 2 + 20 * (-2)             # Test 1
-	print(get_cur_health())            # 90 = 30 * 3                          # Test 2           		
-	print(most_fun_activity_minute())  # resting                              # Test 3
-	perform_activity("resting", 30)    
-	offer_star("running")              
-	print(most_fun_activity_minute())  # running                              # Test 4
-	perform_activity("textbooks", 30)  
-	print(get_cur_health())            # 150 = 90 + 30*2                      # Test 5
-	print(get_cur_hedons())            # -80 = -20 + 30 * (-2)                # Test 6
-	offer_star("running")
-	perform_activity("running", 20)
-	print(get_cur_health())            # 210 = 150 + 20 * 3                   # Test 7
-	print(get_cur_hedons())            # -90 = -80 + 10 * (3-2) + 10 * (-2)   # Test 8
-	perform_activity("running", 170)
-	print(get_cur_health())            # 700 = 210 + 160 * 3 + 10 * 1         # Test 9
-	print(get_cur_hedons())            # -430 = -90 + 170 * (-2)              # Test 10
+	offer_star("textbooks")
+	perform_activity("textbooks", 1)
+	print(get_cur_health())
+	perform_activity('resting', 1)
+	print(get_cur_health())
+	perform_activity('running', 100)
+	print(get_cur_health())
+	perform_activity('running', 100)
+	print(get_cur_health())
+	perform_activity('running', 200)
+	print(get_cur_health())
