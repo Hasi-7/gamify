@@ -71,6 +71,10 @@ def variables_update(duration, activity):
 	elif star_count == 2:
 		last_star_time += duration
 		last_star_2_time += duration
+	if last_star_time > 120
+		star_count = 0
+		last_star_time = 0
+		last_star_2_time = 0
 
 # running_health(): 
 # Check all the cases of when the user runs
