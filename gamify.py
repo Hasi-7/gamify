@@ -200,7 +200,7 @@ def star_bonus_textbooks(duration, x):
 		if x == -2:
 			cur_hedons += (3+x) * 10 + (x) * (duration - 10)
 		else:
-			cur_hedons += (3+x) * 10 + (x) * 10 + (-1) * (duration - 10)
+			cur_hedons += (3+x) * 10 + (x) * 10 + (-1) * (duration - 20)
 	cur_star_activity = None
 	cur_star = False
 
