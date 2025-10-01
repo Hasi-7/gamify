@@ -53,7 +53,7 @@ def initialize():
 # None
 
 def variables_update(duration, activity):
-	global cur_time, last_exercise_finished, last_activity, last_activity_duration, cur_star, last_star_time, last_star_2_time, cur_star_activity, rested_2_hours
+	global cur_time, last_exercise_finished, last_activity, last_activity_duration, cur_star, last_star_time, last_star_2_time, cur_star_activity, rested_2_hours, star_count
 	last_activity = activity
 	last_activity_duration = duration
 	cur_time += duration
