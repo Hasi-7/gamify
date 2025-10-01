@@ -64,11 +64,11 @@ def variables_update(duration, activity):
 		last_exercise_finished = duration
 	else:
 		last_exercise_finished = duration	
-	if  cur_star and star_count == 1:
+	if star_count == 1:
 		last_star_time += duration
 		cur_star_activity = None
 		cur_star = None
-	elif cur_star and star_count == 2:
+	elif star_count == 2:
 		last_star_time += duration
 		last_star_2_time += duration
 
@@ -140,8 +140,8 @@ def star_bonus_running(duration, x):
 		cur_hedons += (3+x)*duration
 	else:
 		cur_hedons += (3+x)*10 + (-2)*(duration-10) 
-#	cur_star_activity = None
-# cur_star = False
+		cur_star_activity = None
+		cur_star = False
 
 # carrying_textbooks_health(): 
 # Update cur_health based on duration
@@ -202,8 +202,8 @@ def star_bonus_textbooks(duration, x):
 			cur_hedons += (3+x) * 10 + (x) * (duration - 10)
 		else:
 			cur_hedons += (3+x) * 10 + (x) * 10 + (-1) * (duration - 20)
-# cur_star_activity = None
-# cur_star = False
+		cur_star_activity = None
+		cur_star = False
 
 # perform_activity():
 # Check which activity the user is performing
