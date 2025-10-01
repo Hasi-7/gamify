@@ -118,10 +118,11 @@ def running_hedons(acitvity, duration):
 			x = -2
 		if cur_star and cur_star_activity == acitvity:
 			star_bonus_running(duration, x)
-		elif is_user_tired:
-			cur_hedons += -2 * duration
 		else:
-			cur_hedons += 2 * 10 + (-2) * (duration - 10)
+			# The first part of this expression assumes that the user is always tired
+			# The second part of the expression adjusts the hedons if the user is not tired and give the extra points they should have
+			# The min function is used to determine whethere duration is greater than 10 min or not
+			cur_hedons += -2 * duration + (x+2) * min(duration, 10)
 
 # star_bonus_running():
 # Check how much star bonus the user recieves for having a star and using it immediately
@@ -175,10 +176,12 @@ def carrying_textbooks_hedons(acitvity, duration):
 		if cur_star and cur_star_activity == acitvity:
 			star_bonus_textbooks(duration, x)
 		else:
-			if is_user_tired:
-				cur_hedons += -2 * duration
-			else:
-				cur_hedons += 1 * 20 + ((-1) * (duration - 20))
+			# The first part of the expression always assumes the user is tired
+			# The second part of the expression has a term that goes to 0 when tires so ignoring that part when tired
+			# When the user is not tired, this term gives the total number of heodons the user should get from not being tired
+			# + negating the hedons with when the user is tired
+			cur_hedons += -2 * duration + (x + 2)/3 * (duration + 2 * min(duration, 20))
+
 
 # star_bonus_textbooks():
 # Check how much star bonus the user recieves for having a star and using it immediately
