@@ -173,14 +173,14 @@ def carrying_textbooks_hedons(acitvity, duration):
 		x = 1
 		if (is_user_tired):
 			x = -2
+		if cur_star and cur_star_activity == acitvity:
+			star_bonus_textbooks(duration, x)
 		else:
 			# The first part of the expression always assumes the user is tired
 			# The second part of the expression has a term that goes to 0 when tires so ignoring that part when tired
 			# When the user is not tired, this term gives the total number of heodons the user should get from not being tired
 			# + negating the hedons with when the user is tired
 			cur_hedons += -2 * duration + (x + 2)/3 * (duration + 2 * min(duration, 20))
-		if cur_star and cur_star_activity == acitvity:
-			star_bonus_textbooks(duration, x)
 
 
 # star_bonus_textbooks():
@@ -194,14 +194,13 @@ def carrying_textbooks_hedons(acitvity, duration):
 
 def star_bonus_textbooks(duration, x):
 	global cur_hedons, cur_star_activity, cur_star
-	cur_hedons += -2 * duration + (x + 2)/3 * (duration + 2 * min(duration, 20)) + 3*min(duration, 10)
-	# if duration <= 10:
-	# 	cur_hedons += (3+x) * duration
-	# else:
-	# 	if x == -2:
-	# 		cur_hedons += (3+x) * 10 + (x) * (duration - 10)
-	# 	else:
-	# 		cur_hedons += (3+x) * 10 + (x) * 10 + (-1) * (duration - 10)
+	if duration <= 10:
+		cur_hedons += (3+x) * duration
+	else:
+		if x == -2:
+			cur_hedons += (3+x) * 10 + (x) * (duration - 10)
+		else:
+			cur_hedons += (3+x) * 10 + (x) * 10 + (-1) * (duration - 10)
 	cur_star_activity = None
 	cur_star = False
 
