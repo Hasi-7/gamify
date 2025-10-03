@@ -53,7 +53,7 @@ def initialize():
 # None
 
 def variables_update(duration, activity):
-	global cur_time, last_exercise_finished, last_activity, last_activity_duration, cur_star, last_star_time, last_star_2_time, cur_star_activity, rested_2_hours, star_count
+	global cur_time, last_exercise_finished, last_activity, last_activity_duration, cur_star, last_star_time, last_star_2_time, cur_star_activity, rested_2_hours
 	last_activity = activity
 	last_activity_duration = duration
 	cur_time += duration
@@ -64,17 +64,20 @@ def variables_update(duration, activity):
 		last_exercise_finished = duration
 	else:
 		last_exercise_finished = duration	
-	if star_count == 1:
+	if  cur_star and star_count == 1:
 		last_star_time += duration
 		cur_star_activity = None
 		cur_star = None
+	elif cur_star and star_count == 2:
+		last_star_time += duration
+		last_star_2_time += duration
+		cur_star_activity = None
+		cur_star = None
+	elif star_count == 1:
+		last_star_time += duration
 	elif star_count == 2:
 		last_star_time += duration
 		last_star_2_time += duration
-	if last_star_time > 120:
-		star_count = 0
-		last_star_time = 0
-		last_star_2_time = 0
 
 # running_health(): 
 # Check all the cases of when the user runs
@@ -144,8 +147,6 @@ def star_bonus_running(duration, x):
 		cur_hedons += (3+x)*duration
 	else:
 		cur_hedons += (3+x)*10 + (-2)*(duration-10) 
-		cur_star_activity = None
-		cur_star = False
 
 # carrying_textbooks_health(): 
 # Update cur_health based on duration
@@ -206,8 +207,6 @@ def star_bonus_textbooks(duration, x):
 			cur_hedons += (3+x) * 10 + (x) * (duration - 10)
 		else:
 			cur_hedons += (3+x) * 10 + (x) * 10 + (-1) * (duration - 20)
-		cur_star_activity = None
-		cur_star = False
 
 # perform_activity():
 # Check which activity the user is performing
@@ -348,14 +347,11 @@ def is_tired():
 				
 if __name__ == '__main__':
 	initialize()
+	perform_activity("running", 1)
+	offer_star('running')
+	print()
+	perform_activity("running", 1)
+	offer_star("textbooks")
+	perform_activity("running", 1)
 	offer_star("textbooks")
 	perform_activity("textbooks", 1)
-	print(get_cur_health())
-	perform_activity('resting', 1)
-	print(get_cur_health())
-	perform_activity('running', 100)
-	print(get_cur_health())
-	perform_activity('running', 100)
-	print(get_cur_health())
-	perform_activity('running', 200)
-	print(get_cur_health())
