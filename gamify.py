@@ -115,16 +115,22 @@ def running_health(duration):
 def running_hedons(acitvity, duration):
 	global bored_with_stars, cur_star_activity, cur_hedons, cur_star_activity, cur_star
 	is_user_tired = is_tired()
-	# if x is 2 then the user is not tired and they will gain 2 hedons for the first 10 minutes then -2 for anything that follows
-	# if x is -2 then the user is tired and will only gain -2 hedons for the total duration of their activity		# is the multiplier for the hedons depending on if the user is tired or not
-	x = 2
-	if (is_user_tired):
-		x = -2
-	if not bored_with_stars and cur_star and cur_star_activity == acitvity:
-		star_bonus_running(duration, x)
-		# The second part of the expression adjusts the hedons if the user is not tired and give the extra points they should have
-		# The min function is used to determine whethere duration is greater than 10 min or not
-		cur_hedons += -2 * duration + (x+2) * min(duration, 10)
+	if bored_with_stars:
+		pass
+	else:
+		# if x is 2 then the user is not tired and they will gain 2 hedons for the first 10 minutes then -2 for anything that follows
+		# if x is -2 then the user is tired and will only gain -2 hedons for the total duration of their activity
+		# is the multiplier for the hedons depending on if the user is tired or not
+		x = 2
+		if (is_user_tired):
+			x = -2
+		if cur_star and cur_star_activity == acitvity:
+			star_bonus_running(duration, x)
+		else:
+			# The first part of this expression assumes that the user is always tired
+			# The second part of the expression adjusts the hedons if the user is not tired and give the extra points they should have
+			# The min function is used to determine whethere duration is greater than 10 min or not
+			cur_hedons += -2 * duration + (x+2) * min(duration, 10)
 
 # star_bonus_running():
 # Check how much star bonus the user recieves for having a star and using it immediately
@@ -164,21 +170,23 @@ def carrying_textbooks_health(duration):
 def carrying_textbooks_hedons(acitvity, duration):
 	global bored_with_stars, cur_star_activity, cur_hedons, cur_star_activity, cur_star, last_star_time
 	is_user_tired = is_tired()
-	
-	# if x is 1 then the user is not tired and they will gain 1 hedons for the first 20 minutes then -1 for anything that follows
-	# if x is -1 then the user is tired and will only gain -1 hedons for the total duration of their activity
-	# x represents the hedons multiplier depending on if the user is tired or not
-	x = 1
-	if (is_user_tired):
-		x = -2
-	if not bored_with_stars and cur_star and cur_star_activity == acitvity:
-		star_bonus_textbooks(duration, x)
+	if bored_with_stars:
+		pass
 	else:
-		# The first part of the expression always assumes the user is tired
-		# The second part of the expression has a term that goes to 0 when tires so ignoring that part when tired
-		# When the user is not tired, this term gives the total number of heodons the user should get from not being tired
-		# + negating the hedons with when the user is tired
-		cur_hedons += -2 * duration + (x + 2)/3 * (duration + 2 * min(duration, 20))
+		# if x is 1 then the user is not tired and they will gain 1 hedons for the first 20 minutes then -1 for anything that follows
+		# if x is -1 then the user is tired and will only gain -1 hedons for the total duration of their activity
+		# x represents the hedons multiplier depending on if the user is tired or not
+		x = 1
+		if (is_user_tired):
+			x = -2
+		if cur_star and cur_star_activity == acitvity:
+			star_bonus_textbooks(duration, x)
+		else:
+			# The first part of the expression always assumes the user is tired
+			# The second part of the expression has a term that goes to 0 when tires so ignoring that part when tired
+			# When the user is not tired, this term gives the total number of heodons the user should get from not being tired
+			# + negating the hedons with when the user is tired
+			cur_hedons += -2 * duration + (x + 2)/3 * (duration + 2 * min(duration, 20))
 
 
 # star_bonus_textbooks():
@@ -347,4 +355,4 @@ if __name__ == '__main__':
 	perform_activity("running", 1)
 	offer_star("textbooks")
 	perform_activity("textbooks", 1)
-	print(get_cur_hedons())
+	print(get_cur_hedons)
