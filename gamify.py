@@ -116,6 +116,7 @@ def running_hedons(acitvity, duration):
 	global bored_with_stars, cur_star_activity, cur_hedons, cur_star_activity, cur_star
 	is_user_tired = is_tired()
 	if bored_with_stars:
+		cur_hedons += -2 * duration
 		pass
 	else:
 		# if x is 2 then the user is not tired and they will gain 2 hedons for the first 10 minutes then -2 for anything that follows
@@ -171,6 +172,7 @@ def carrying_textbooks_hedons(acitvity, duration):
 	global bored_with_stars, cur_star_activity, cur_hedons, cur_star_activity, cur_star, last_star_time
 	is_user_tired = is_tired()
 	if bored_with_stars:
+		cur_hedons += -2 * duration
 		pass
 	else:
 		# if x is 1 then the user is not tired and they will gain 1 hedons for the first 20 minutes then -1 for anything that follows
@@ -355,4 +357,4 @@ if __name__ == '__main__':
 	perform_activity("running", 1)
 	offer_star("textbooks")
 	perform_activity("textbooks", 1)
-	print(get_cur_hedons)
+	print(get_cur_hedons())
