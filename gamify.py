@@ -57,13 +57,16 @@ def variables_update(duration, activity):
 	last_activity = activity
 	last_activity_duration = duration
 	cur_time += duration
+	# Check if the user has just finished an exercise and sdjust duration accordingly
 	if activity == "running" or activity == "textbooks":
 		last_exercise_finished = 0
 	elif duration >= 120:
 		rested_2_hours = True
 		last_exercise_finished = duration
 	else:
-		last_exercise_finished = duration	
+		last_exercise_finished = duration
+	# Check if the user has a star and if that star is active. 
+	# Adjust the star time and the star activity accordingly
 	if  cur_star and star_count == 1:
 		last_star_time += duration
 		cur_star_activity = None
@@ -90,7 +93,8 @@ def variables_update(duration, activity):
 
 def running_health(duration):
 	global cur_health, running_minutes
-	# First four if/elif statements check for all cases relevant to total consecutive running minutes being greater than 180
+	# First four if/elif statements check for all cases relevant 
+	# to total consecutive running minutes being greater than 180
 	if running_minutes > 180:
 		cur_health += duration * 1
 	elif duration > 180:
@@ -99,7 +103,8 @@ def running_health(duration):
 		cur_health += 180 * 3 + (duration - 180) * 1
 	elif duration + running_minutes > 180:
 		cur_health += (180 - running_minutes) * 3 + (duration - (180 - running_minutes)) * 1	
-	# The next else block is for when duration is less than 180 minutes, which has a constant amount of health points given for duration of running.
+	# The next else block is for when duration is less than 180 minutes, 
+	# which has a constant amount of health points given for duration of running.
 	else:
 		cur_health += duration * 3
 
